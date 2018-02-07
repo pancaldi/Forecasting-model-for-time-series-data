@@ -1,0 +1,40 @@
+Observations: At the top of the figure, the dataset is connected to two Execute R Script modules. The one on the left prepares data for training, and the one on the right prepares data for scoring. Both modules contains the scripts below:
+Left Execute R Script
+df <- maml.mapInputPort(1) # class: data.frame
+df$Month = substr(df$Month, 1, 3)
+ln = nrow(df)
+df = df[1:(ln = 12), ]
+maml.mapOutputPort("df");
+
+Right Execute R Script
+df <- maml.mapInputPort(1) # class: data.frame
+df$Month = substr(df$Month, 1, 3)
+ln = nrow(df)
+df = df[(ln = 11):ln, ]
+maml.mapOutputPort("df");
+
+For the Train Model module, the column to be selected and trained is 'Icecream.Prod'
+For the Create R Model module, the script contained in it is:
+Trainer R script
+# Input: dataset
+# Output: model
+
+library(forecast)
+temp <- ts(log(dataset[,"Icecream.Prod"]), frequency=12, start=1995
+library(forecast)
+
+Scorer R script
+# Input: model, dataset
+# Output: scores
+
+library(forecast)
+fcst = forecast(model, h=12)
+scores = data.frame(forecast = exp(fcst$mean),
+
+The last Execute R Script module is used to visualize results. The following script applies:
+df <- maml.mapInputPort(1)
+plot.cols = c('Icecream.Prod', 'forecast', 'upper95', 'lower95')
+df[, plot.cols] = lapply(df[, plot.cols], ts, frequency=12, start=1995
+ts.plot(df$forecast, df$Icecream.Prod, df$upper95, df$lower95,
+  col = c('blue', 'red','green','green'),
+  lty = c(1, 1, 3, 3))
