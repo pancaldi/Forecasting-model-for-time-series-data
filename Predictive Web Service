@@ -1,0 +1,17 @@
+From the experiment page on Azure, Set Up Web Service is clicked followed by Predictive Web Service (Recommended). A predictive graphic will appear. Delete the dataset (icecreamprod.csv) then add a Enter Data Manually module to the experiment by connecting its output to the Dataset1 (left-most) input of the Execute R Script module to replace the deleted original dataset. Edit the properties of the Enter Data Manually by setting the DataFormat property to CSV and selecting the HasHeader checkbox, and entering the data below:
+Year, Month, MonthNumber
+2014, Jan, 1
+2014, Feb, 2
+2014, Mar, 3
+2014, Apr, 4
+2014, May, 5
+2014, Jun, 6
+2014, Jul, 7
+2014, Aug, 8
+2014, Sep, 9
+2014, Oct, 10
+2014, Nov, 11
+2014, Dec, 12
+
+After entering the above data, the experiment is saved and run. The ouput of Score Model module is visualized and verified that the ouput columns include a forecast along with a prediction for the upper95 and lower95 percentiles.
+Then add a Select Columns in Dataset module to the predictive experiment, and connect the output from the Score Model to its input. Then connect its output to the Web service output. Use the column selector of the properties of the Select Columns in Dataset module to select only the forecast, upper95, and lower95 columns. The experiment will take a diferent shape. Save and run it. Visualize the output of the Select Columns in Dataset module to verify that only the forecast, upper95, and lower95 columns are returned.
